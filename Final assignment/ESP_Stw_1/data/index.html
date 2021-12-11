@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Motivated</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="jquery-1.11.3.min.js"></script>
+	<link href="roundslider.min.css" rel="stylesheet" />
+	<script src="roundslider.min.js"></script>
+</head>
+<body style="background-image: url('https://wallpaperaccess.com/full/840326.jpg')">
+	
+
+			<br>
+            <br>
+            <div class="container" >
+            	<div class="jumbotron" style="color:rgba(200,0,0);background-color: rgba(0,0,0,0.3);text-align:center;"><h3><b>Embedded Project 2021</b></h3></div>
+            </div>
+
+            <div class="container">
+            	<div class="jumbotron" style="padding-top:20px;background-color: rgba(0,0,0,0.3);">
+            		<div class="row">
+                		<div class="col-xs-2"></div>
+                		<div class="col-xs-3"></div>
+                		<div class="col-xs-2" style="margin-left: 14px; font-size: 50px;"><button id = "forwardBtn" class="glyphicon glyphicon-circle-arrow-up" ></button> </div>
+                		<div class="col-xs-2"></div>
+                		<div class="col-xs-2"></div>
+            		</div>
+            	<br>
+            	<br>
+            		<div class="row">
+                		<div class="col-xs-2"></div>
+                		<div class="col-xs-1"></div>
+                		<div class="col-xs-1"></div>
+                		<div class="col-xs-2"></div>
+                		<div class="col-xs-2"></div>
+            		</div>
+            	<br>
+            	<br>
+            		<div class="row">
+            			<div class="col-xs-2"></div>
+                		<div class="col-xs-3"></div>
+                		<div class="col-xs-2" style="margin-left: 14px; font-size: 50px;"><button id = "backwardBtn" class="glyphicon glyphicon-circle-arrow-down" onclick="backward()"></button> </div>
+                		<div class="col-xs=2"></div>
+                		<div class="col-xs-2"></div>
+            		</div>
+				</div>
+				<br>
+            	<br>
+			</div>
+
+			<div class = "container">
+				<div style="padding: 20px 0 0 30px; font-family: monospace; background-color: rgba(0,0,0,0.3); color:red" >
+					<div class="types" style="display: flex; justify-content: space-between;">
+						<h3>Steering wheel</h3>
+				
+						<div class="">
+							<div class="control">
+							<div id="rd_slider_1"></div>  
+							<br/> 
+							 change : <div id="range" ></div> 
+							</div>
+				
+											<br/>          
+								 
+						</div>
+
+						<div >
+							<h3>Drive</h3>
+								<br/>
+								<button style="color: black;" onclick="FRW5()">Forw 5cm</button>
+								<br/>
+								<button style="color: black;" onclick="FRW1()">Forw 1cm</button>
+								<br/>
+								<br/>
+								<button style="color: black;" onclick="RET1()">Ret.. 1cm</button>
+								<br/>
+								<button style="color: black;" onclick="RET5()">Ret.. 5cm</button>
+								<br/>
+								<br/>
+								<button style="color: black;" onclick="TL90()">Turn Left 90 <span>&#176</span></button>
+								<br/>
+								<button style="color: black;" onclick="TR90()">Turn Right 90 <span>&#176</span></button>
+								<p id = "box1"></p>
+							<br/>
+							<input style="color: black;" id="box2" type="text" value="00"><span><button style="color: black;" onclick="Custom()">Move</button></span></input>
+							<ul style="list-style-type: none; color: yellow !important;">
+								Hint(Move:0,Speed:100)
+							<li>Move  0 - 1</li>
+							<li>Speed 1 - 254</li>
+							<li></br></li>
+							<li>Turn:-90...90</li>
+							<li>Move:-50...50</li>
+							</ul>
+						</div>
+					</div>
+
+					
+				</div>
+
+				<br/>
+				<br/>
+			
+					
+			</div>
+
+				
+        	
+
+
+    <script type="text/javascript">
+
+
+		var dire=0;		// direction					  	 
+		var dist=0;		// distance
+		var mode=0;		// mode 1 = direction value 2=distance vale
+		var data="";
+	
+		var valx = document.getElementById("rd_slider_1").value;
+	
+		document.getElementById("box1").value=0 ;
+		document.getElementById("box2").value= 0 ;
+	
+		$(document).ready(function () 
+		{
+    		$("#rd_slider_1").roundSlider
+			(
+				{
+			   
+				radius: 85,
+				min: -180,
+				max: 180,
+		 		circleShape: "pie",
+				sliderType: "min-range",
+            	value: 0,
+				startAngle: 315,
+			
+				change: function(args) 
+					{
+						$('#range').html(args.value);	
+								//document.getElementById("stor").value=args.value;
+						// call type function
+								
+						//send_srw_val(args.value);	 						   
+						dire=args.value;			 // direction variable set
+						send_srw_val(dire);			 // call type_sl_val	
+						
+					}	
+				}
+			);
+		});
+
+		
+	function send_srw_val(val)		   				 // send stw value  
+	{
+   	 // console.log(e.type);
+	// valx=10;
+	 document.getElementById("box1").value=val ;
+	 mode=1;	 
+	 httpGetAsync(tryme);
+	}	
+	
+	function TR90() {
+		document.getElementById("box1").innerHTML = "Turn R 90";
+		mode = 1 ;
+		dire = 90;
+		httpGetAsync(tryme);
+	}
+
+	function TL90() {
+		document.getElementById("box1").innerHTML = "Turn L 90";
+		mode = 1 ;
+		dire = -90;
+		httpGetAsync(tryme);
+	}
+	
+	function FRW5() 
+	{
+  	 document.getElementById("box1").innerHTML = "Forw 5 cm";
+	 mode=2;
+	 dist=5; 
+	 httpGetAsync(tryme); 
+	 }
+
+	function RET5() 
+	{
+  	 document.getElementById("box1").innerHTML = "Ret 5 cm";
+	 mode=2;
+	 dist=-5;
+	 httpGetAsync(tryme); 
+	 }
+	 
+ 	function FRW1() 
+	{
+  	 document.getElementById("box1").innerHTML = "Forw 1 cm";
+	 mode=2;
+	 dist=1; 
+	 httpGetAsync(tryme); 
+	 }
+
+	// function FW() {
+	// 	setInterval(FRW1, 200);
+	// }
+
+	function RET1() 
+	{
+	//console.log('button pressed');
+  	 document.getElementById("box1").innerHTML = "Ret 1 cm";
+	 mode=2;
+	 dist=-1;
+	 httpGetAsync(tryme); 
+	 
+	 }
+
+	function Custom()
+	{
+		data = document.getElementById("box2").value ;
+		mode = 3 ;
+		httpGetAsync(tryme);
+	}
+	 
+
+	 
+	 
+	 
+	function httpGetAsync(callback)
+	 {
+      		  var xmlHttp = new XMLHttpRequest();
+    	 	  xmlHttp.onreadystatechange = function()
+			   { 
+    					  	 if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            							 callback(xmlHttp.responseText);
+    		    }
+				if (mode==1) { 	xmlHttp.open("GET",'/?dire='+dire, true); };// true for asynchronous 
+    			if (mode==2) {  xmlHttp.open("GET",'/?dist='+dist, true); };// true for asynchronous
+				if (mode==3) {  xmlHttp.open("GET",'/?cust='+data, true); console.log(data)};
+				// if (mode==4) {  xmlHttp.open("GET",'/?dire='+90, true); };
+				// if (mode==5) {  xmlHttp.open("GET",'/?dire='-90, true); };
+
+				xmlHttp.send(null);
+	}
+	
+
+	 
+	function tryme(param1)
+	{
+
+ 	  //		 document.getElementById("box2").value=param1;
+	  		 document.getElementById("demo").value=param1;
+		
+	}
+
+	window.onload = function() {
+		let execute ;
+    //preload mouse down image here via Image()
+    $("#forwardBtn").bind('touchstart mousedown', function(){
+        execute = setInterval(FRW1 , 200);
+    }).bind('mouseup touchend', function(){
+        clearInterval(execute);
+    });
+
+	$("#backwardBtn").bind('touchstart mousedown', function(){
+        execute = setInterval(RET1 , 200);
+    }).bind('mouseup touchend', function(){
+        clearInterval(execute);
+    });
+	}
+
+	
+
+
+           	
+    	</script>
+
+<style>
+	
+</style>
+	</body>
+</html>
